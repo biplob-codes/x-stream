@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Clock, HardDrive, Monitor, Tag } from "lucide-react";
+import FavouriteButton from "./FavouriteButton";
 
 interface VideoCardProps {
   id: string;
@@ -8,6 +9,7 @@ interface VideoCardProps {
   duration: number | null;
   resolution: string | null;
   size: number | null;
+  isFavourite: boolean;
   category: { name: string };
   videoTags: { tag: { id: string; name: string } }[];
 }
@@ -31,11 +33,13 @@ function formatSize(bytes: number | null): string {
 }
 
 const VideoCard = ({
+  id,
   filename,
   thumbnailPath,
   duration,
   resolution,
   size,
+  isFavourite,
   category,
   videoTags,
 }: VideoCardProps) => {
@@ -59,14 +63,14 @@ const VideoCard = ({
           </div>
         )}
 
-        {/* Duration badge */}
+        <FavouriteButton videoId={id} initialState={isFavourite} />
+
         {duration && (
           <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[11px] font-medium px-1.5 py-0.5 rounded-md">
             {formatDuration(duration)}
           </div>
         )}
 
-        {/* Category badge */}
         <div className="absolute top-2 left-2 bg-[#1a1a2e]/80 text-white text-[11px] font-medium px-2 py-0.5 rounded-md">
           {category.name}
         </div>
@@ -74,7 +78,6 @@ const VideoCard = ({
 
       {/* Info */}
       <div className="p-3 flex flex-col gap-2">
-        {/* Filename */}
         <p
           className="text-sm font-medium text-gray-800 truncate"
           title={filename}
@@ -82,7 +85,6 @@ const VideoCard = ({
           {filename}
         </p>
 
-        {/* Meta row */}
         <div className="flex items-center gap-3 text-[11px] text-gray-400">
           {resolution && (
             <span className="flex items-center gap-1">
@@ -104,7 +106,6 @@ const VideoCard = ({
           )}
         </div>
 
-        {/* Tags */}
         {videoTags.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {videoTags.map(({ tag }) => (

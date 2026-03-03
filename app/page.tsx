@@ -60,6 +60,7 @@ const HomePage = async ({ searchParams }: Props) => {
               <VideoCard
                 key={video.id}
                 id={video.id}
+                isFavourite={video.isFavourite}
                 filename={video.filename}
                 thumbnailPath={video.thumbnailPath}
                 duration={video.duration}
