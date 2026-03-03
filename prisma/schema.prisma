@@ -12,19 +12,38 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+ 
 
-model Video{
-  id        String   @id @default(uuid())
-  title     String
-  path      String
-  category  Category @relation("CategoryVideos", fields: [categoryId], references: [id])
+model Video {
+  id         String     @id @default(uuid())
+  filename   String
+  path       String
   categoryId String
-  createdAt DateTime @default(now())
+  category   Category   @relation(fields: [categoryId], references: [id])
+  videoTags  VideoTag[]
+  createdAt  DateTime   @default(now())
 }
 
-model Category{
-  id        String   @id @default(uuid())
-  name      String
-  videos    Video[]  @relation("CategoryVideos")
-  createdAt DateTime @default(now())
+model Category {
+  id         String   @id @default(uuid())
+  name       String   @unique
+  folderPath String
+  videos     Video[]
+  createdAt  DateTime @default(now())
+}
+
+model Tag {
+  id         String     @id @default(uuid())
+  name       String     @unique
+  videoTags  VideoTag[]
+  createdAt  DateTime   @default(now())
+}
+
+model VideoTag {
+  videoId String
+  tagId   String
+  video   Video  @relation(fields: [videoId], references: [id])
+  tag     Tag    @relation(fields: [tagId], references: [id])
+
+  @@id([videoId, tagId])
 }
