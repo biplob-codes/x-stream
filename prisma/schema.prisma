@@ -19,6 +19,10 @@ model Video {
   filename   String
   path       String
   categoryId String
+  thumbnailPath String?
+  duration      Float?
+  resolution    String?
+  size          Float?
   category   Category   @relation(fields: [categoryId], references: [id])
   videoTags  VideoTag[]
   createdAt  DateTime   @default(now())
