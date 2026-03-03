@@ -1,0 +1,126 @@
+import Image from "next/image";
+import { Clock, HardDrive, Monitor, Tag } from "lucide-react";
+
+interface VideoCardProps {
+  id: string;
+  filename: string;
+  thumbnailPath: string | null;
+  duration: number | null;
+  resolution: string | null;
+  size: number | null;
+  category: { name: string };
+  videoTags: { tag: { id: string; name: string } }[];
+}
+
+function formatDuration(seconds: number | null): string {
+  if (!seconds) return "Unknown";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  if (h > 0)
+    return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
+function formatSize(bytes: number | null): string {
+  if (!bytes) return "Unknown";
+  const gb = bytes / (1024 * 1024 * 1024);
+  if (gb >= 1) return `${gb.toFixed(1)} GB`;
+  const mb = bytes / (1024 * 1024);
+  return `${mb.toFixed(0)} MB`;
+}
+
+const VideoCard = ({
+  filename,
+  thumbnailPath,
+  duration,
+  resolution,
+  size,
+  category,
+  videoTags,
+}: VideoCardProps) => {
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
+      {/* Thumbnail */}
+      <div
+        className="relative w-full bg-gray-100"
+        style={{ aspectRatio: "16/9" }}
+      >
+        {thumbnailPath ? (
+          <Image
+            src={thumbnailPath}
+            alt={filename}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <Monitor size={32} className="text-gray-300" />
+          </div>
+        )}
+
+        {/* Duration badge */}
+        {duration && (
+          <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[11px] font-medium px-1.5 py-0.5 rounded-md">
+            {formatDuration(duration)}
+          </div>
+        )}
+
+        {/* Category badge */}
+        <div className="absolute top-2 left-2 bg-[#1a1a2e]/80 text-white text-[11px] font-medium px-2 py-0.5 rounded-md">
+          {category.name}
+        </div>
+      </div>
+
+      {/* Info */}
+      <div className="p-3 flex flex-col gap-2">
+        {/* Filename */}
+        <p
+          className="text-sm font-medium text-gray-800 truncate"
+          title={filename}
+        >
+          {filename}
+        </p>
+
+        {/* Meta row */}
+        <div className="flex items-center gap-3 text-[11px] text-gray-400">
+          {resolution && (
+            <span className="flex items-center gap-1">
+              <Monitor size={11} />
+              {resolution}
+            </span>
+          )}
+          {size && (
+            <span className="flex items-center gap-1">
+              <HardDrive size={11} />
+              {formatSize(size)}
+            </span>
+          )}
+          {duration && (
+            <span className="flex items-center gap-1">
+              <Clock size={11} />
+              {formatDuration(duration)}
+            </span>
+          )}
+        </div>
+
+        {/* Tags */}
+        {videoTags.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {videoTags.map(({ tag }) => (
+              <span
+                key={tag.id}
+                className="flex items-center gap-1 px-2 py-0.5 bg-[#f0f4ff] text-[#1a1a2e] text-[11px] font-medium rounded-md"
+              >
+                <Tag size={9} />
+                {tag.name}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default VideoCard;
