@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import { prisma } from "@/app/lib/prisma";
 import config from "@/config";
-
+import { addToQueue } from "@/app/lib/thumbnailQueue";
 export async function POST(request: NextRequest) {
   try {
     const { filename, categoryId, tagIds } = await request.json();
@@ -50,6 +50,7 @@ export async function POST(request: NextRequest) {
 
     // then move the file
     fs.renameSync(sourcePath, destPath);
+    addToQueue(video.id, destPath);
 
     return NextResponse.json({ video }, { status: 201 });
   } catch (error: any) {
