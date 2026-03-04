@@ -24,6 +24,7 @@ model Video {
   resolution    String?
   size          Float?
     isFavourite   Boolean    @default(false)
+  isCompleted   Boolean    @default(false)
 
   category   Category   @relation(fields: [categoryId], references: [id])
   videoTags  VideoTag[]
