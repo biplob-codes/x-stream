@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { Clock, HardDrive, Monitor, Tag } from "lucide-react";
+import { Clock, HardDrive, Monitor, Tag, CheckCircle } from "lucide-react";
 import FavouriteButton from "./FavouriteButton";
+import Link from "next/link";
 
 interface VideoCardProps {
   id: string;
@@ -10,6 +11,7 @@ interface VideoCardProps {
   resolution: string | null;
   size: number | null;
   isFavourite: boolean;
+  isCompleted: boolean;
   category: { name: string };
   videoTags: { tag: { id: string; name: string } }[];
 }
@@ -40,87 +42,98 @@ const VideoCard = ({
   resolution,
   size,
   isFavourite,
+  isCompleted,
   category,
   videoTags,
 }: VideoCardProps) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
-      {/* Thumbnail */}
-      <div
-        className="relative w-full bg-gray-100"
-        style={{ aspectRatio: "16/9" }}
-      >
-        {thumbnailPath ? (
-          <Image
-            src={thumbnailPath}
-            alt={filename}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <Monitor size={32} className="text-gray-300" />
-          </div>
-        )}
-
-        <FavouriteButton videoId={id} initialState={isFavourite} />
-
-        {duration && (
-          <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[11px] font-medium px-1.5 py-0.5 rounded-md">
-            {formatDuration(duration)}
-          </div>
-        )}
-
-        <div className="absolute top-2 left-2 bg-[#1a1a2e]/80 text-white text-[11px] font-medium px-2 py-0.5 rounded-md">
-          {category.name}
-        </div>
-      </div>
-
-      {/* Info */}
-      <div className="p-3 flex flex-col gap-2">
-        <p
-          className="text-sm font-medium text-gray-800 truncate"
-          title={filename}
+    <Link href={`/videos/${id}`}>
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
+        {/* Thumbnail */}
+        <div
+          className="relative w-full bg-gray-100"
+          style={{ aspectRatio: "16/9" }}
         >
-          {filename}
-        </p>
+          {thumbnailPath ? (
+            <Image
+              src={thumbnailPath}
+              alt={filename}
+              fill
+              className={`object-cover group-hover:scale-105 transition-transform duration-300 ${isCompleted ? "opacity-50" : ""}`}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <Monitor size={32} className="text-gray-300" />
+            </div>
+          )}
 
-        <div className="flex items-center gap-3 text-[11px] text-gray-400">
-          {resolution && (
-            <span className="flex items-center gap-1">
-              <Monitor size={11} />
-              {resolution}
-            </span>
+          <FavouriteButton videoId={id} initialState={isFavourite} />
+
+          {isCompleted && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="bg-green-500/80 rounded-full p-2">
+                <CheckCircle size={24} className="text-white" />
+              </div>
+            </div>
           )}
-          {size && (
-            <span className="flex items-center gap-1">
-              <HardDrive size={11} />
-              {formatSize(size)}
-            </span>
-          )}
+
           {duration && (
-            <span className="flex items-center gap-1">
-              <Clock size={11} />
+            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[11px] font-medium px-1.5 py-0.5 rounded-md">
               {formatDuration(duration)}
-            </span>
+            </div>
           )}
+
+          <div className="absolute top-2 left-2 bg-[#1a1a2e]/80 text-white text-[11px] font-medium px-2 py-0.5 rounded-md">
+            {category.name}
+          </div>
         </div>
 
-        {videoTags.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {videoTags.map(({ tag }) => (
-              <span
-                key={tag.id}
-                className="flex items-center gap-1 px-2 py-0.5 bg-[#f0f4ff] text-[#1a1a2e] text-[11px] font-medium rounded-md"
-              >
-                <Tag size={9} />
-                {tag.name}
+        {/* Info */}
+        <div className="p-3 flex flex-col gap-2">
+          <p
+            className="text-sm font-medium text-gray-800 truncate"
+            title={filename}
+          >
+            {filename}
+          </p>
+
+          <div className="flex items-center gap-3 text-[11px] text-gray-400">
+            {resolution && (
+              <span className="flex items-center gap-1">
+                <Monitor size={11} />
+                {resolution}
               </span>
-            ))}
+            )}
+            {size && (
+              <span className="flex items-center gap-1">
+                <HardDrive size={11} />
+                {formatSize(size)}
+              </span>
+            )}
+            {duration && (
+              <span className="flex items-center gap-1">
+                <Clock size={11} />
+                {formatDuration(duration)}
+              </span>
+            )}
           </div>
-        )}
+
+          {videoTags.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {videoTags.map(({ tag }) => (
+                <span
+                  key={tag.id}
+                  className="flex items-center gap-1 px-2 py-0.5 bg-[#f0f4ff] text-[#1a1a2e] text-[11px] font-medium rounded-md"
+                >
+                  <Tag size={9} />
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

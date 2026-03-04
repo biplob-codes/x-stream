@@ -39,6 +39,7 @@ const FavouritesPage = async () => {
                 resolution={video.resolution}
                 size={video.size}
                 isFavourite={video.isFavourite}
+                isCompleted={video.isCompleted}
                 category={video.category}
                 videoTags={video.videoTags}
               />

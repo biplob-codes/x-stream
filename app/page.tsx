@@ -19,18 +19,15 @@ const HomePage = async ({ searchParams }: Props) => {
     where:
       tagIds.length > 0
         ? {
+            isCompleted: false,
             AND: tagIds.map((tagId) => ({
-              videoTags: {
-                some: { tagId },
-              },
+              videoTags: { some: { tagId } },
             })),
           }
-        : undefined,
+        : { isCompleted: false },
     include: {
       category: true,
-      videoTags: {
-        include: { tag: true },
-      },
+      videoTags: { include: { tag: true } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -61,6 +58,7 @@ const HomePage = async ({ searchParams }: Props) => {
                 key={video.id}
                 id={video.id}
                 isFavourite={video.isFavourite}
+                isCompleted={video.isCompleted}
                 filename={video.filename}
                 thumbnailPath={video.thumbnailPath}
                 duration={video.duration}
