@@ -26,7 +26,7 @@ async function processVideo(videoId: string, videoPath: string): Promise<void> {
         ? `${videoStream.width}x${videoStream.height}`
         : null;
 
-      const seekTime = duration * 0.6;
+      const seekTime = duration * 0.75;
       const thumbnailPath = path.join(THUMBNAIL_DIR, `${videoId}.jpg`);
       const thumbnailUrl = `/thumbnails/${videoId}.jpg`;
 

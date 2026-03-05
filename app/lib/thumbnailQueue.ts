@@ -56,8 +56,8 @@ async function processVideo({ videoId, videoPath }: QueueJob): Promise<void> {
         ? `${videoStream.width}x${videoStream.height}`
         : null;
 
-      // seek to 60% of duration for thumbnail
-      const seekTime = duration * 0.6;
+      // seek to 75% of duration for thumbnail
+      const seekTime = duration * 0.75;
       const thumbnailPath = path.join(THUMBNAIL_DIR, `${videoId}.jpg`);
       const thumbnailUrl = `/thumbnails/${videoId}.jpg`;
 
