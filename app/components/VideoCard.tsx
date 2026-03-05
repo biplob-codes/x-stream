@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Clock, HardDrive, Monitor, Tag, CheckCircle } from "lucide-react";
 import FavouriteButton from "./FavouriteButton";
 import Link from "next/link";
+import { removeExtension } from "../lib/cleanFileName";
 
 interface VideoCardProps {
   id: string;
@@ -48,7 +49,7 @@ const VideoCard = ({
 }: VideoCardProps) => {
   return (
     <Link href={`/videos/${id}`}>
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
+      <div className="bg-white rounded-md border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
         {/* Thumbnail */}
         <div
           className="relative w-full bg-gray-100"
@@ -90,11 +91,8 @@ const VideoCard = ({
 
         {/* Info */}
         <div className="p-3 flex flex-col gap-2">
-          <p
-            className="text-sm font-medium text-gray-800 truncate"
-            title={filename}
-          >
-            {filename}
+          <p className="text-sm font-medium text-gray-800 truncate">
+            {removeExtension(filename)}
           </p>
 
           <div className="flex items-center gap-3 text-[11px] text-gray-400">

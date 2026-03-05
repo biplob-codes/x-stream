@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import VideoPlayer from "./VideoPlayer";
 import TagSelector from "./TagSelector";
 import CategoryPanel from "./CategoryPanel";
-import { RefreshCw } from "lucide-react";
+import { cleanFilename } from "../lib/cleanFileName";
 
 interface Video {
   filename: string;
@@ -28,6 +28,7 @@ export default function TransferPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editedFilename, setEditedFilename] = useState("");
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
@@ -55,6 +56,14 @@ export default function TransferPage() {
   useEffect(() => {
     fetchAll();
   }, [fetchAll]);
+
+  const currentVideo = videos[currentIndex];
+
+  useEffect(() => {
+    if (currentVideo) {
+      setEditedFilename(cleanFilename(currentVideo.filename));
+    }
+  }, [currentVideo]);
 
   const handleTagSelect = (tagId: string) => {
     setSelectedTagIds((prev) =>
@@ -94,6 +103,7 @@ export default function TransferPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           filename: current.filename,
+          newFilename: editedFilename,
           categoryId: category.id,
           tagIds: selectedTagIds,
         }),
@@ -105,7 +115,6 @@ export default function TransferPage() {
         return;
       }
 
-      // clear tags and advance to next video
       setSelectedTagIds([]);
       setVideos((prev) => prev.filter((_, i) => i !== currentIndex));
       setCurrentIndex((prev) =>
@@ -115,8 +124,6 @@ export default function TransferPage() {
       console.error("Move error:", error);
     }
   };
-
-  const currentVideo = videos[currentIndex];
 
   if (loading) {
     return (
@@ -129,30 +136,14 @@ export default function TransferPage() {
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Left — video + tags */}
-      <div className="flex flex-col flex-1 p-4 gap-3 overflow-hidden">
-        {/* Top bar */}
-        {/* <div className="flex items-center justify-between shrink-0">
-          <div>
-            <h1 className="text-base font-semibold text-gray-900">Transfer</h1>
-            <p className="text-xs text-gray-400">
-              {videos.length} video{videos.length !== 1 ? "s" : ""} remaining
-            </p>
-          </div>
-          <button
-            onClick={fetchAll}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
-          >
-            <RefreshCw size={13} />
-            Refresh
-          </button>
-        </div> */}
-
+      <div className="flex flex-col flex-1 px-4 pt-2 gap-3 overflow-hidden">
         {/* Video player */}
         <div className="flex-1 overflow-hidden">
           {currentVideo ? (
             <VideoPlayer
               filePath={currentVideo.path}
               filename={currentVideo.filename}
+              totalVideos={videos.length}
             />
           ) : (
             <div className="flex items-center justify-center h-full bg-gray-50 rounded-xl border border-gray-200">
@@ -160,6 +151,18 @@ export default function TransferPage() {
             </div>
           )}
         </div>
+
+        {/* Editable filename */}
+        {currentVideo && (
+          <div className="shrink-0 flex flex-col gap-1">
+            <input
+              type="text"
+              value={editedFilename}
+              onChange={(e) => setEditedFilename(e.target.value)}
+              className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-800 outline-none focus:border-[#1a1a2e] transition-colors"
+            />
+          </div>
+        )}
 
         {/* Tags */}
         <div className="shrink-0">

@@ -14,7 +14,7 @@ const CategoryCard = ({ id, name, videoCount, thumbnails }: Props) => {
 
   return (
     <Link href={`/categories/${id}`}>
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
+      <div className="bg-white rounded-md border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
         {/* 2x2 thumbnail collage */}
         <div
           className="grid grid-cols-2 grid-rows-2"
@@ -41,7 +41,7 @@ const CategoryCard = ({ id, name, videoCount, thumbnails }: Props) => {
         {/* Info */}
         <div className="px-3 py-2.5 flex items-center justify-between">
           <p className="text-sm font-semibold text-gray-800 truncate">{name}</p>
-          <span className="text-xs text-gray-400 shrink-0 ml-2">
+          <span className="text-xs text-gray-700 shrink-0 ml-2">
             {videoCount} {videoCount === 1 ? "video" : "videos"}
           </span>
         </div>

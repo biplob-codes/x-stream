@@ -41,12 +41,10 @@ const TagFilter = ({ tags }: Props) => {
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
-   
-
       {/* All button */}
       <button
         onClick={handleAllClick}
-        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer
+        className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-150 cursor-pointer
           ${
             isAllSelected
               ? "bg-[#1a1a2e] text-white"
@@ -62,11 +60,11 @@ const TagFilter = ({ tags }: Props) => {
           <button
             key={tag.id}
             onClick={() => handleTagClick(tag.id)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer
+            className={`px-3 py-1.5 rounded  text-xs font-medium transition-all duration-150 cursor-pointer
               ${
                 isSelected
                   ? "bg-[#1a1a2e] text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
           >
             {tag.name}

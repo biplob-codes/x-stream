@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
-import { Monitor, Trash2 } from "lucide-react";
 import CompletedButton from "@/app/components/CompletedButton";
 import DeleteButton from "@/app/components/DeleteButton";
+import { Monitor } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
@@ -31,7 +31,7 @@ const CompletedVideoCard = ({
   isDeleted,
 }: Props) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200">
+    <div className="bg-white rounded border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200">
       {/* Thumbnail */}
       {isDeleted ? (
         <div
@@ -80,11 +80,13 @@ const CompletedVideoCard = ({
 
       {/* Actions — hidden when deleted */}
       {!isDeleted && (
-        <div className="p-2 flex gap-2">
+        <div className="p-2 flex justify-between gap-2">
           <div className="flex-1">
             <CompletedButton videoId={id} initialState={true} />
           </div>
-          <DeleteButton videoId={id} />
+          <div className=" ">
+            <DeleteButton videoId={id} />
+          </div>
         </div>
       )}
     </div>

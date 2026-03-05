@@ -34,7 +34,7 @@ const TagSelector = ({
   };
 
   return (
-    <div className="border border-gray-200 rounded-xl p-4 bg-white">
+    <div className="border border-gray-200 rounded-xl px-4 py-2 bg-white">
       <div className="flex flex-wrap gap-2 mb-3">
         {tags.map((tag) => {
           const isSelected = selectedTagIds.includes(tag.id);

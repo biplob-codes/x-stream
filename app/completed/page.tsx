@@ -4,7 +4,7 @@ import CompletedVideoCard from "./CompletedVideoCard";
 const CompletedPage = async () => {
   const videos = await prisma.video.findMany({
     where: { isCompleted: true },
-    orderBy: { createdAt: "desc" },
+    orderBy: { isDeleted: "asc" },
   });
 
   return (

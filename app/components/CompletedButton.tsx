@@ -31,15 +31,14 @@ const CompletedButton = ({ videoId, initialState }: Props) => {
   return (
     <button
       onClick={toggle}
-      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer
+      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer justify-center w-full
         ${
           isCompleted
-            ? "bg-green-500 text-white hover:bg-green-600"
+            ? "bg-gray-800 text-white hover:bg-gray-600"
             : "bg-gray-100 text-gray-600 hover:bg-gray-200"
         }`}
     >
-      <CheckCircle size={16} />
-      {isCompleted ? "Completed" : "Mark as Completed"}
+      Mark as Uncomplete
     </button>
   );
 };

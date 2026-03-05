@@ -4,9 +4,10 @@ import path from "path";
 import { prisma } from "@/app/lib/prisma";
 import config from "@/config";
 import { addToQueue } from "@/app/lib/thumbnailQueue";
+
 export async function POST(request: NextRequest) {
   try {
-    const { filename, categoryId, tagIds } = await request.json();
+    const { filename, newFilename, categoryId, tagIds } = await request.json();
 
     if (!filename || !categoryId || !tagIds || tagIds.length === 0) {
       return NextResponse.json(
@@ -15,7 +16,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // get category to find destination folder name
     const category = await prisma.category.findUnique({
       where: { id: categoryId },
     });
@@ -27,19 +27,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const finalFilename = newFilename?.trim() || filename;
     const sourcePath = path.join(config.inboxFolder, filename);
     const destDir = path.join(config.libraryFolder, category.name);
-    const destPath = path.join(destDir, filename);
+    const destPath = path.join(destDir, finalFilename);
 
-    // create the category subfolder if it doesn't exist yet
     if (!fs.existsSync(destDir)) {
       fs.mkdirSync(destDir, { recursive: true });
     }
 
-    // write to DB first
     const video = await prisma.video.create({
       data: {
-        filename,
+        filename: finalFilename,
         path: destPath,
         categoryId,
         videoTags: {
@@ -48,7 +47,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // then move the file
     fs.renameSync(sourcePath, destPath);
     addToQueue(video.id, destPath);
 
