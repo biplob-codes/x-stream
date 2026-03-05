@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { Clock, Monitor } from "lucide-react";
+import Link from "next/link";
 
 interface Props {
   filename: string;
   thumbnailPath: string | null;
   duration: number | null;
+  id:string
 }
 
 function formatDuration(seconds: number | null): string {
@@ -17,8 +19,9 @@ function formatDuration(seconds: number | null): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-const CategoryVideoCard = ({ filename, thumbnailPath, duration }: Props) => {
+const CategoryVideoCard = ({ filename, thumbnailPath, duration,id }: Props) => {
   return (
+   <Link href={`/videos/${id}`}>
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
       {/* Thumbnail */}
       <div
@@ -53,7 +56,7 @@ const CategoryVideoCard = ({ filename, thumbnailPath, duration }: Props) => {
           {filename}
         </p>
       </div>
-    </div>
+    </div></Link>
   );
 };
 

@@ -1,13 +1,9 @@
 import { prisma } from "@/app/lib/prisma";
-import VideoCard from "@/app/components/VideoCard";
+import CompletedVideoCard from "./CompletedVideoCard";
 
 const CompletedPage = async () => {
   const videos = await prisma.video.findMany({
     where: { isCompleted: true },
-    include: {
-      category: true,
-      videoTags: { include: { tag: true } },
-    },
     orderBy: { createdAt: "desc" },
   });
 
@@ -26,20 +22,15 @@ const CompletedPage = async () => {
             <p className="text-sm text-gray-400">No completed videos yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3   gap-4">
             {videos.map((video) => (
-              <VideoCard
+              <CompletedVideoCard
                 key={video.id}
                 id={video.id}
                 filename={video.filename}
                 thumbnailPath={video.thumbnailPath}
                 duration={video.duration}
-                resolution={video.resolution}
-                size={video.size}
-                isFavourite={video.isFavourite}
-                isCompleted={video.isCompleted}
-                category={video.category}
-                videoTags={video.videoTags}
+                isDeleted={video.isDeleted}
               />
             ))}
           </div>

@@ -80,6 +80,7 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
                 filename={video.filename}
                 thumbnailPath={video.thumbnailPath}
                 duration={video.duration}
+                id={video.id}
               />
             ))}
           </div>

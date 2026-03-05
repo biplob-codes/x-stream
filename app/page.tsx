@@ -20,11 +20,12 @@ const HomePage = async ({ searchParams }: Props) => {
       tagIds.length > 0
         ? {
             isCompleted: false,
+            isDeleted: false,
             AND: tagIds.map((tagId) => ({
               videoTags: { some: { tagId } },
             })),
           }
-        : { isCompleted: false },
+        : { isCompleted: false, isDeleted: false },
     include: {
       category: true,
       videoTags: { include: { tag: true } },

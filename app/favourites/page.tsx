@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma";
 
 const FavouritesPage = async () => {
   const videos = await prisma.video.findMany({
-    where: { isFavourite: true },
+    where: { isFavourite: true, isDeleted: false },
     include: {
       category: true,
       videoTags: { include: { tag: true } },
