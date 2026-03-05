@@ -23,18 +23,22 @@ export const metadata: Metadata = {
   },
 };
 
+import AuthGuard from "./components/AuthGuard";
+
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen overflow-hidden`}
       >
-        <LeftPanel />
-        <main className="flex-1 min-w-0 overflow-hidden">{children}</main>{" "}
+        <AuthGuard>
+          <LeftPanel />
+          <main className="flex-1 min-w-0 overflow-hidden">{children}</main>
+        </AuthGuard>
       </body>
     </html>
   );
