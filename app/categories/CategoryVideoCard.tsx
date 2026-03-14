@@ -27,10 +27,9 @@ const CategoryVideoCard = ({
 }: Props) => {
   return (
     <Link href={`/videos/${id}`}>
-      <div className="bg-white rounded  border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
-        {/* Thumbnail */}
+      <div className="bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 group cursor-pointer">
         <div
-          className="relative w-full bg-gray-100"
+          className="relative w-full bg-gray-100 dark:bg-gray-800"
           style={{ aspectRatio: "16/9" }}
         >
           {thumbnailPath ? (
@@ -42,7 +41,7 @@ const CategoryVideoCard = ({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Monitor size={28} className="text-gray-300" />
+              <Monitor size={28} className="text-gray-300 dark:text-gray-600" />
             </div>
           )}
           {duration && (

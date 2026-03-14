@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LeftPanel from "./LeftPanel";
+import AuthGuard from "./components/AuthGuard";
+import ThemeProvider from "./components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,22 +25,22 @@ export const metadata: Metadata = {
   },
 };
 
-import AuthGuard from "./components/AuthGuard";
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark:[color-scheme:dark]">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen overflow-hidden bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100`}
       >
-        <AuthGuard>
-          <LeftPanel />
-          <main className="flex-1 min-w-0 overflow-hidden">{children}</main>
-        </AuthGuard>
+        <ThemeProvider>
+          <AuthGuard>
+            <LeftPanel />
+            <main className="flex-1 min-w-0 overflow-hidden">{children}</main>
+          </AuthGuard>
+        </ThemeProvider>
       </body>
     </html>
   );

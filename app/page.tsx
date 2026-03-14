@@ -39,21 +39,21 @@ const HomePage = async ({ searchParams }: Props) => {
 
   return (
     <div className="flex flex-col h-screen mt-1 overflow-hidden">
-      {/* Tag filter bar */}
-      <div className="shrink-0 px-5 pt-1 pb-2 border-b border-gray-100">
+      <div className="shrink-0 px-5 pt-1 pb-2 border-b border-gray-100 dark:border-gray-800">
         <Suspense fallback={null}>
           <TagFilter tags={tags} />
         </Suspense>
       </div>
 
-      {/* Video grid */}
       <div className="flex-1 overflow-y-auto px-5 pt-2">
         {videos.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <p className="text-sm text-gray-400">No videos found.</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500">
+              No videos found.
+            </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3   gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {videos.map((video) => (
               <VideoCard
                 key={video.id}

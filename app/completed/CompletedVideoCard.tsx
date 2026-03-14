@@ -31,11 +31,10 @@ const CompletedVideoCard = ({
   isDeleted,
 }: Props) => {
   return (
-    <div className="bg-white rounded border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200">
-      {/* Thumbnail */}
+    <div className="bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200">
       {isDeleted ? (
         <div
-          className="relative w-full bg-gray-100"
+          className="relative w-full bg-gray-100 dark:bg-gray-800"
           style={{ aspectRatio: "16/9" }}
         >
           {thumbnailPath ? (
@@ -43,18 +42,18 @@ const CompletedVideoCard = ({
               src={thumbnailPath}
               alt={filename}
               fill
-              className="object-cover opacity-90 cursor-not-allowed  "
+              className="object-cover opacity-30 grayscale"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Monitor size={28} className="text-gray-200" />
+              <Monitor size={28} className="text-gray-200 dark:text-gray-700" />
             </div>
           )}
         </div>
       ) : (
         <Link href={`/videos/${id}`}>
           <div
-            className="relative w-full bg-gray-100"
+            className="relative w-full bg-gray-100 dark:bg-gray-800"
             style={{ aspectRatio: "16/9" }}
           >
             {thumbnailPath ? (
@@ -66,7 +65,10 @@ const CompletedVideoCard = ({
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <Monitor size={28} className="text-gray-300" />
+                <Monitor
+                  size={28}
+                  className="text-gray-300 dark:text-gray-600"
+                />
               </div>
             )}
             {duration && (
@@ -78,13 +80,12 @@ const CompletedVideoCard = ({
         </Link>
       )}
 
-      {/* Actions — hidden when deleted */}
       {!isDeleted && (
-        <div className="p-2 flex justify-between gap-2">
+        <div className="p-2 flex gap-2">
           <div className="flex-1">
             <CompletedButton videoId={id} initialState={true} />
           </div>
-          <div className=" ">
+          <div className="flex-1">
             <DeleteButton videoId={id} />
           </div>
         </div>

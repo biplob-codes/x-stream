@@ -49,10 +49,9 @@ const VideoCard = ({
 }: VideoCardProps) => {
   return (
     <Link href={`/videos/${id}`}>
-      <div className="bg-white rounded-md border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group cursor-pointer">
-        {/* Thumbnail */}
+      <div className="bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 group cursor-pointer">
         <div
-          className="relative w-full bg-gray-100"
+          className="relative w-full bg-gray-100 dark:bg-gray-800"
           style={{ aspectRatio: "16/9" }}
         >
           {thumbnailPath ? (
@@ -64,7 +63,7 @@ const VideoCard = ({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Monitor size={32} className="text-gray-300" />
+              <Monitor size={32} className="text-gray-300 dark:text-gray-600" />
             </div>
           )}
 
@@ -89,13 +88,12 @@ const VideoCard = ({
           </div>
         </div>
 
-        {/* Info */}
         <div className="p-3 flex flex-col gap-2">
-          <p className="text-sm font-medium text-gray-800 truncate">
+          <p className="text-sm font-medium text-gray-800 dark:text-gray-100 truncate">
             {removeExtension(filename)}
           </p>
 
-          <div className="flex items-center gap-3 text-[11px] text-gray-400">
+          <div className="flex items-center gap-3 text-[11px] text-gray-400 dark:text-gray-500">
             {resolution && (
               <span className="flex items-center gap-1">
                 <Monitor size={11} />
@@ -121,7 +119,7 @@ const VideoCard = ({
               {videoTags.map(({ tag }) => (
                 <span
                   key={tag.id}
-                  className="flex items-center gap-1 px-2 py-0.5 bg-[#f0f4ff] text-[#1a1a2e] text-[11px] font-medium rounded-md"
+                  className="flex items-center gap-1 px-2 py-0.5 bg-[#f0f4ff] dark:bg-[#1a1a2e] text-[#1a1a2e] dark:text-blue-300 text-[11px] font-medium rounded-md"
                 >
                   <Tag size={9} />
                   {tag.name}

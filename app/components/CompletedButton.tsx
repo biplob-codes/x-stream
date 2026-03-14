@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { CheckCircle } from "lucide-react";
 
 interface Props {
   videoId: string;
@@ -15,7 +14,6 @@ const CompletedButton = ({ videoId, initialState }: Props) => {
     if (loading) return;
     setLoading(true);
     setIsCompleted((prev) => !prev);
-
     try {
       const res = await fetch(`/api/videos/${videoId}/completed`, {
         method: "PATCH",
@@ -31,12 +29,7 @@ const CompletedButton = ({ videoId, initialState }: Props) => {
   return (
     <button
       onClick={toggle}
-      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer justify-center w-full
-        ${
-          isCompleted
-            ? "bg-gray-800 text-white hover:bg-gray-600"
-            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-        }`}
+      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer justify-center w-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
     >
       Mark as Uncomplete
     </button>

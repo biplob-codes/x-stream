@@ -42,7 +42,7 @@ const DeleteButton = ({ videoId }: Props) => {
         ${
           confirming
             ? "bg-red-500 text-white hover:bg-red-600"
-            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
         }`}
     >
       <Trash2 size={16} />

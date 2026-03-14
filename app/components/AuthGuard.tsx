@@ -11,9 +11,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const auth = sessionStorage.getItem("auth");
-    if (auth === "true") {
-      setUnlocked(true);
-    }
+    if (auth === "true") setUnlocked(true);
     setChecked(true);
   }, []);
 
@@ -45,14 +43,16 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (!unlocked) {
     return (
-      <div className="flex items-center justify-center h-screen w-screen bg-gray-50">
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 w-full max-w-sm flex flex-col items-center gap-6">
+      <div className="flex items-center justify-center h-screen w-screen bg-gray-50 dark:bg-gray-950">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-8 w-full max-w-sm flex flex-col items-center gap-6">
           <div className="w-12 h-12 rounded-xl bg-[#1a1a2e] flex items-center justify-center shadow-md">
             <span className="text-white font-bold text-xl">X</span>
           </div>
           <div className="text-center">
-            <h1 className="text-lg font-semibold text-gray-900">X Stream</h1>
-            <p className="text-xs text-gray-400 mt-1">
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              X Stream
+            </h1>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               Enter password to continue
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
                 onKeyDown={handleKeyDown}
                 placeholder="Password"
                 autoFocus
-                className="w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border border-gray-200 bg-gray-50 text-gray-800 placeholder-gray-400 outline-none focus:border-[#1a1a2e] transition-colors"
+                className="w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-[#1a1a2e] dark:focus:border-gray-500 transition-colors"
               />
             </div>
             {error && (

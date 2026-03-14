@@ -127,7 +127,7 @@ export default function TransferPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen text-gray-400 text-sm">
+      <div className="flex items-center justify-center h-screen text-gray-400 dark:text-gray-500 text-sm">
         Loading...
       </div>
     );
@@ -146,20 +146,22 @@ export default function TransferPage() {
               totalVideos={videos.length}
             />
           ) : (
-            <div className="flex items-center justify-center h-full bg-gray-50 rounded-xl border border-gray-200">
-              <p className="text-sm text-gray-400">No videos in inbox</p>
+            <div className="flex items-center justify-center h-full bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+              <p className="text-sm text-gray-400 dark:text-gray-500">
+                No videos in inbox
+              </p>
             </div>
           )}
         </div>
 
         {/* Editable filename */}
         {currentVideo && (
-          <div className="shrink-0 flex flex-col gap-1">
+          <div className="shrink-0">
             <input
               type="text"
               value={editedFilename}
               onChange={(e) => setEditedFilename(e.target.value)}
-              className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-800 outline-none focus:border-[#1a1a2e] transition-colors"
+              className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 outline-none focus:border-[#1a1a2e] dark:focus:border-gray-500 transition-colors"
             />
           </div>
         )}

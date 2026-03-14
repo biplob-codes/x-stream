@@ -11,27 +11,29 @@ const CategoriesPage = async () => {
       },
       _count: { select: { videos: true } },
     },
-    orderBy: {
-      videos: { _count: "desc" },
-    },
+    orderBy: { videos: { _count: "desc" } },
   });
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <div className="shrink-0 px-4 pt-2 pb-3 border-b border-gray-100">
-        <h1 className="text-base font-semibold text-gray-900">Categories</h1>
-        <p className="text-xs text-gray-400">{categories.length} categories</p>
+      <div className="shrink-0 px-4 pt-2 pb-3 border-b border-gray-100 dark:border-gray-800">
+        <h1 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+          Categories
+        </h1>
+        <p className="text-xs text-gray-400 dark:text-gray-500">
+          {categories.length} categories
+        </p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4">
         {categories.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-400 dark:text-gray-500">
               No categories yet. Create one in Transfer.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3   gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {categories.map((cat) => (
               <CategoryCard
                 key={cat.id}
