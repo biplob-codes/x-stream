@@ -3,6 +3,7 @@ import CategoryVideoCard from "../CategoryVideoCard";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import RandomButton from "@/app/components/RandomButton";
 
 const VIDEOS_PER_PAGE = 15;
 
@@ -31,6 +32,12 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
     take: VIDEOS_PER_PAGE,
   });
 
+  // fetch all video ids from this category for random button
+  const allVideos = await prisma.video.findMany({
+    where: { categoryId: id },
+    select: { id: true },
+  });
+
   const totalPages = Math.ceil(category._count.videos / VIDEOS_PER_PAGE);
 
   return (
@@ -53,11 +60,14 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
               {category._count.videos === 1 ? "video" : "videos"}
             </p>
           </div>
-          {totalPages > 1 && (
-            <p className="text-xs text-gray-400 dark:text-gray-500">
-              Page {currentPage} of {totalPages}
-            </p>
-          )}
+          <div className="flex items-center gap-3">
+            {totalPages > 1 && (
+              <p className="text-xs text-gray-400 dark:text-gray-500">
+                Page {currentPage} of {totalPages}
+              </p>
+            )}
+            <RandomButton videoIds={allVideos.map((v) => v.id)} />
+          </div>
         </div>
       </div>
 

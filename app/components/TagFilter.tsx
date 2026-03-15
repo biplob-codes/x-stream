@@ -31,15 +31,15 @@ const TagFilter = ({ tags }: Props) => {
   const isAllSelected = selectedIds.length === 0;
 
   return (
-    <div className="flex items-center gap-2 flex-wrap">
+    <>
       <button
         onClick={handleAllClick}
         className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-150 cursor-pointer
-          ${
-            isAllSelected
-              ? "bg-[#1a1a2e] dark:bg-white text-white dark:text-[#1a1a2e]"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-          }`}
+        ${
+          isAllSelected
+            ? "bg-[#1a1a2e] dark:bg-white text-white dark:text-[#1a1a2e]"
+            : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+        }`}
       >
         All
       </button>
@@ -50,17 +50,17 @@ const TagFilter = ({ tags }: Props) => {
             key={tag.id}
             onClick={() => handleTagClick(tag.id)}
             className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-150 cursor-pointer
-              ${
-                isSelected
-                  ? "bg-[#1a1a2e] dark:bg-white text-white dark:text-[#1a1a2e]"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-              }`}
+            ${
+              isSelected
+                ? "bg-[#1a1a2e] dark:bg-white text-white dark:text-[#1a1a2e]"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+            }`}
           >
             {tag.name}
           </button>
         );
       })}
-    </div>
+    </>
   );
 };
 
