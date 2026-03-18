@@ -4,7 +4,7 @@ import VideoPlayer from "./VideoPlayer";
 import TagSelector from "./TagSelector";
 import CategoryPanel from "./CategoryPanel";
 import { cleanFilename } from "../lib/cleanFileName";
-
+import { SkipForward } from "lucide-react";
 interface Video {
   filename: string;
   path: string;
@@ -124,7 +124,11 @@ export default function TransferPage() {
       console.error("Move error:", error);
     }
   };
-
+  const handleSkip = () => {
+    if (videos.length === 0) return;
+    setSelectedTagIds([]);
+    setCurrentIndex((prev) => (prev >= videos.length - 1 ? 0 : prev + 1));
+  };
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen text-gray-400 dark:text-gray-500 text-sm">
@@ -156,13 +160,20 @@ export default function TransferPage() {
 
         {/* Editable filename */}
         {currentVideo && (
-          <div className="shrink-0">
+          <div className="shrink-0 flex gap-2">
             <input
               type="text"
               value={editedFilename}
               onChange={(e) => setEditedFilename(e.target.value)}
-              className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 outline-none focus:border-[#1a1a2e] dark:focus:border-gray-500 transition-colors"
+              className="flex-1 text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 outline-none focus:border-[#1a1a2e] dark:focus:border-gray-500 transition-colors"
             />
+            <button
+              onClick={handleSkip}
+              className="shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            >
+              <SkipForward size={14} />
+              Skip
+            </button>
           </div>
         )}
 
