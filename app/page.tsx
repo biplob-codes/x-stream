@@ -31,12 +31,12 @@ const HomePage = async ({ searchParams }: Props) => {
       category: true,
       videoTags: { include: { tag: true } },
     },
-    orderBy: { createdAt: "desc" },
   });
 
   const tags = await prisma.tag.findMany({
     orderBy: { createdAt: "asc" },
   });
+  const shuffled = videos.sort(() => Math.random() - 0.5);
 
   return (
     <div className="flex flex-col h-screen mt-1 overflow-hidden">
@@ -56,7 +56,7 @@ const HomePage = async ({ searchParams }: Props) => {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {videos.map((video) => (
+            {shuffled.map((video) => (
               <VideoCard
                 key={video.id}
                 id={video.id}

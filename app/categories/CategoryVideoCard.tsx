@@ -6,6 +6,8 @@ interface Props {
   filename: string;
   thumbnailPath: string | null;
   duration: number | null;
+  size: number | null;
+  resolution: string | null;
   id: string;
 }
 
@@ -19,10 +21,20 @@ function formatDuration(seconds: number | null): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
+function formatSize(bytes: number | null): string {
+  if (!bytes) return "";
+  const gb = bytes / (1024 * 1024 * 1024);
+  if (gb >= 1) return `${gb.toFixed(1)}GB`;
+  const mb = bytes / (1024 * 1024);
+  return `${mb.toFixed(0)}MB`;
+}
+
 const CategoryVideoCard = ({
   filename,
   thumbnailPath,
   duration,
+  size,
+  resolution,
   id,
 }: Props) => {
   return (
@@ -44,6 +56,22 @@ const CategoryVideoCard = ({
               <Monitor size={28} className="text-gray-300 dark:text-gray-600" />
             </div>
           )}
+
+          {/* Top right — resolution */}
+          {resolution && (
+            <div className="absolute top-2 right-2 bg-black/70 text-white text-[10px] font-medium px-1.5 py-0.5 rounded-md">
+              {resolution}
+            </div>
+          )}
+
+          {/* Bottom left — size */}
+          {size && (
+            <div className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] font-medium px-1.5 py-0.5 rounded-md">
+              {formatSize(size)}
+            </div>
+          )}
+
+          {/* Bottom right — duration */}
           {duration && (
             <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[11px] font-medium px-1.5 py-0.5 rounded-md">
               {formatDuration(duration)}

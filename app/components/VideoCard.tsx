@@ -115,16 +115,21 @@ const VideoCard = ({
           </div>
 
           {videoTags.length > 0 && (
-            <div className="flex flex-wrap gap-1">
-              {videoTags.map(({ tag }) => (
+            <div className="flex items-center gap-1 overflow-hidden">
+              {videoTags.slice(0, 4).map(({ tag }) => (
                 <span
                   key={tag.id}
-                  className="flex items-center gap-1 px-2 py-0.5 bg-[#f0f4ff] dark:bg-[#1a1a2e] text-[#1a1a2e] dark:text-blue-300 text-[11px] font-medium rounded-md"
+                  className="flex items-center gap-1 px-2 py-0.5 bg-[#f0f4ff] dark:bg-[#1a1a2e] text-[#1a1a2e] dark:text-blue-300 text-[11px] font-medium rounded-md shrink-0"
                 >
                   <Tag size={9} />
                   {tag.name}
                 </span>
               ))}
+              {videoTags.length > 4 && (
+                <span className="text-[11px] text-blue-700 dark:text-blue-500 shrink-0 ml-1">
+                  +{videoTags.length - 4}
+                </span>
+              )}
             </div>
           )}
         </div>

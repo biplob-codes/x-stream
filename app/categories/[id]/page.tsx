@@ -30,6 +30,14 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
     orderBy: { createdAt: "desc" },
     skip,
     take: VIDEOS_PER_PAGE,
+    select: {
+      id: true,
+      filename: true,
+      thumbnailPath: true,
+      duration: true,
+      size: true,
+      resolution: true,
+    },
   });
 
   // fetch all video ids from this category for random button
@@ -86,6 +94,8 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
                 filename={video.filename}
                 thumbnailPath={video.thumbnailPath}
                 duration={video.duration}
+                size={video.size}
+                resolution={video.resolution}
                 id={video.id}
               />
             ))}
