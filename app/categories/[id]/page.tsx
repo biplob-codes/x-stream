@@ -7,15 +7,28 @@ import RandomButton from "@/app/components/RandomButton";
 
 const VIDEOS_PER_PAGE = 15;
 
+type SortKey = "duration" | "size" | "createdAt";
+type SortDir = "asc" | "desc";
+
 interface Props {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; sort?: string; dir?: string }>;
 }
+
+const SORT_OPTIONS: { value: SortKey; descLabel: string; ascLabel: string }[] =
+  [
+    { value: "createdAt", descLabel: "Newest", ascLabel: "Oldest" },
+    { value: "duration", descLabel: "Longest", ascLabel: "Shortest" },
+    { value: "size", descLabel: "Largest", ascLabel: "Smallest" },
+  ];
 
 const CategoryDetailPage = async ({ params, searchParams }: Props) => {
   const { id } = await params;
-  const { page } = await searchParams;
+  const { page, sort, dir } = await searchParams;
   const currentPage = parseInt(page || "1", 10);
+  const currentSort: SortKey =
+    sort === "duration" || sort === "size" ? sort : "createdAt";
+  const currentDir: SortDir = dir === "asc" ? "asc" : "desc";
   const skip = (currentPage - 1) * VIDEOS_PER_PAGE;
 
   const category = await prisma.category.findUnique({
@@ -27,7 +40,7 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
 
   const videos = await prisma.video.findMany({
     where: { categoryId: id },
-    orderBy: { createdAt: "desc" },
+    orderBy: { [currentSort]: currentDir },
     skip,
     take: VIDEOS_PER_PAGE,
     select: {
@@ -40,13 +53,15 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
     },
   });
 
-  // fetch all video ids from this category for random button
   const allVideos = await prisma.video.findMany({
     where: { categoryId: id },
     select: { id: true },
   });
 
   const totalPages = Math.ceil(category._count.videos / VIDEOS_PER_PAGE);
+
+  const buildHref = (newSort: SortKey, newDir: SortDir, newPage = 1) =>
+    `/categories/${id}?sort=${newSort}&dir=${newDir}&page=${newPage}`;
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
@@ -58,7 +73,7 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
           <ChevronLeft size={13} />
           Back to Categories
         </Link>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
           <div>
             <h1 className="text-base font-semibold text-gray-900 dark:text-gray-100">
               {category.name}
@@ -68,7 +83,36 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
               {category._count.videos === 1 ? "video" : "videos"}
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            {SORT_OPTIONS.map(({ value, descLabel, ascLabel }) => {
+              const isActiveSort = currentSort === value;
+              // clicking the active button flips direction; clicking inactive defaults to desc
+              const nextDir: SortDir = isActiveSort
+                ? currentDir === "desc"
+                  ? "asc"
+                  : "desc"
+                : "desc";
+              const label = isActiveSort
+                ? currentDir === "desc"
+                  ? descLabel
+                  : ascLabel
+                : descLabel;
+
+              return (
+                <Link
+                  key={value}
+                  href={buildHref(value, nextDir)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors
+                    ${
+                      isActiveSort
+                        ? "bg-[#1a1a2e] dark:bg-white text-white dark:text-[#1a1a2e]"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                >
+                  {label}
+                </Link>
+              );
+            })}
             {totalPages > 1 && (
               <p className="text-xs text-gray-400 dark:text-gray-500">
                 Page {currentPage} of {totalPages}
@@ -106,7 +150,7 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
           <div className="flex items-center justify-center gap-2 mt-6">
             {currentPage > 1 && (
               <Link
-                href={`/categories/${id}?page=${currentPage - 1}`}
+                href={buildHref(currentSort, currentDir, currentPage - 1)}
                 className="px-4 py-2 text-xs font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
                 Previous
@@ -115,7 +159,7 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
               <Link
                 key={p}
-                href={`/categories/${id}?page=${p}`}
+                href={buildHref(currentSort, currentDir, p)}
                 className={`px-3 py-2 text-xs font-medium rounded-lg transition-colors
                   ${
                     p === currentPage
@@ -128,7 +172,7 @@ const CategoryDetailPage = async ({ params, searchParams }: Props) => {
             ))}
             {currentPage < totalPages && (
               <Link
-                href={`/categories/${id}?page=${currentPage + 1}`}
+                href={buildHref(currentSort, currentDir, currentPage + 1)}
                 className="px-4 py-2 text-xs font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
                 Next
